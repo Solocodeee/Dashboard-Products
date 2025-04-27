@@ -1,3 +1,32 @@
+
+# Products Management Dashboard
+
+Manage your products efficiently and professionally with our intuitive dashboard.  
+You can search, filter, add, edit, and organize your product listings easily.
+
+🔹 Built for businesses that value precision, speed, and performance.
+
+⚠️ **Note:** This dashboard is designed for **Desktop screens** only.
+
+## Features
+- Search products
+- Filter by category
+- Add new products
+- Edit existing products
+- Delete products
+- View product statistics (Average price, Quantities, Bestsellers)
+
+## Technologies Used
+- **Next.js** (React framework)
+- **TypeScript** (for strong typing)
+- **Tailwind CSS** (for custom styling)
+- **Bootstrap** (for layout and components)
+- **Axios** (for API requests)
+- **FakeStoreAPI** (for sample products)
+- **Chart.js** (for product statistics and graphical data)
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
