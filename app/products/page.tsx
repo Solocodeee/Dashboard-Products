@@ -1,8 +1,9 @@
+// ProductsPage.tsx
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddProductDrawer from "../components/AddProductDrawer";
-import Image from "next/image"; // استيراد Image من next/image لتحسين الصور
+import Image from "next/image"; 
 
 interface Product {
   id: number;
@@ -188,7 +189,6 @@ export default function ProductsPage() {
           isOpen={isEditDrawerOpen}
           onClose={() => setIsEditDrawerOpen(false)}
           onAddProduct={handleUpdateProduct}
-          product={currentProduct}
         />
       )}
     </div>
