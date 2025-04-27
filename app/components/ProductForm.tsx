@@ -1,13 +1,21 @@
 "use client";
+
 import { useState } from 'react';
+
+// تحديد نوع البيانات
+interface Product {
+  name: string;
+  brand: string;
+  price: number;
+  description: string;
+}
 
 export default function AddProductSidebar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [product, setProduct] = useState({
+  const [product, setProduct] = useState<Product>({
     name: '',
     brand: 'Apple',
-    price: '',
-    negotiable: false,
+    price: 0,
     description: ''
   });
 
@@ -15,15 +23,15 @@ export default function AddProductSidebar() {
     setIsOpen(!isOpen);
   };
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
     setProduct(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: name === 'price' ? parseFloat(value) : value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Product submitted:', product);
     toggleSidebar();
@@ -107,17 +115,6 @@ export default function AddProductSidebar() {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 />
-                <div className="mt-2 flex items-center">
-                  <input
-                    type="checkbox"
-                    id="negotiable"
-                    name="negotiable"
-                    checked={product.negotiable}
-                    onChange={handleChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="negotiable" className="ml-2 block text-sm text-gray-700">Negotiable</label>
-                </div>
               </div>
 
               <div>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import AddProductDrawer from "../components/AddProductDrawer";
+import Image from "next/image"; // استيراد Image من next/image لتحسين الصور
 
 interface Product {
   id: number;
@@ -18,7 +19,7 @@ export default function ProductsPage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false)
+  const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null); 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -82,7 +83,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="max-w-2xl  p-4">
+    <div className="max-w-2xl p-4">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-xl font-bold text-black">Products Management</h1>
         <button
@@ -119,8 +120,8 @@ export default function ProductsPage() {
             className="w-full p-2 border rounded text-black text-sm"
           >
             <option value="All">All Categories</option>
-            <option value="men's clothing">Men's Clothing</option>
-            <option value="women's clothing">Women's Clothing</option>
+            <option value="men's clothing">Men s Clothing</option>
+            <option value="women's clothing">Women s Clothing</option>
             <option value="jewelery">Jewelery</option>
             <option value="electronics">Electronics</option>
           </select>
@@ -139,7 +140,7 @@ export default function ProductsPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase">Image</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase">Title</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase">Category</th> {/* New column for Category */}
+                <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase">Category</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-black uppercase">Actions</th>
               </tr>
             </thead>
@@ -147,14 +148,14 @@ export default function ProductsPage() {
               {filteredProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
-                    <img src={product.image} alt={product.title} className="h-10 w-10 object-contain" />
+                    <Image src={product.image} alt={product.title} className="h-10 w-10 object-contain" width={40} height={40} />
                   </td>
                   <td className="px-6 py-4 text-black text-sm">
                     <div className="font-medium">{product.title}</div>
                     <div className="text-sm text-black">{product.category}</div>
                   </td>
                   <td className="px-6 py-4 text-black text-sm">${product.price.toFixed(2)}</td>
-                  <td className="px-6 py-4 text-black text-sm">{product.category}</td> {/* Displaying Category */}
+                  <td className="px-6 py-4 text-black text-sm">{product.category}</td>
                   <td className="px-6 py-4">
                     <button
                       onClick={() => handleEditProduct(product)}

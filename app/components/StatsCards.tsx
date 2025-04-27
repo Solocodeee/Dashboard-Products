@@ -26,8 +26,14 @@ ChartJS.register(
   Legend
 );
 
+interface Product {
+  id: number;
+  price: number; // تأكد من أن السعر عدد وليس نص
+  category: string;
+}
+
 const StatsCards: FC = () => {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [averagePrice, setAveragePrice] = useState<number>(0);
   const [topCategory, setTopCategory] = useState<string>("");
@@ -39,11 +45,11 @@ const StatsCards: FC = () => {
         setProducts(data);
         setTotalProducts(data.length);
 
-        const total = data.reduce((acc: number, product: any) => acc + parseFloat(product.price), 0);
+        const total = data.reduce((acc: number, product: Product) => acc + parseFloat(product.price.toString()), 0);
         setAveragePrice(total / data.length);
 
         const categoryCount: { [key: string]: number } = {};
-        data.forEach((product: any) => {
+        data.forEach((product: Product) => {
           const category = product.category;
           categoryCount[category] = (categoryCount[category] || 0) + 1;
         });
@@ -105,7 +111,7 @@ const StatsCards: FC = () => {
                 datasets: [
                   {
                     label: "Total Products",
-                    data: [23400, 16000, 30000, 22000, 10000, 24400, 8000], // يمكنك تعديل هذه البيانات لتتناسب مع البيانات الفعلية
+                    data: [23400, 16000, 30000, 22000, 10000, 24400, 8000],
                     borderColor: "rgba(59, 130, 246, 1)",
                     backgroundColor: "rgba(59, 130, 246, 0.2)",
                     fill: true,
@@ -129,7 +135,7 @@ const StatsCards: FC = () => {
                 datasets: [
                   {
                     label: "Average Price",
-                    data: [100, 150, 130, 110, 90, 150, 120], // يمكنك تعديل هذه البيانات لتتناسب مع البيانات الفعلية
+                    data: [100, 150, 130, 110, 90, 150, 120],
                     borderColor: "rgba(234, 179, 8, 1)",
                     backgroundColor: "rgba(234, 179, 8, 0.2)",
                     fill: true,
@@ -153,7 +159,7 @@ const StatsCards: FC = () => {
                 datasets: [
                   {
                     label: "Top Category",
-                    data: [2000, 3000, 2500, 4000, 3500, 3000, 4200], // يمكنك تعديل هذه البيانات لتتناسب مع البيانات الفعلية
+                    data: [2000, 3000, 2500, 4000, 3500, 3000, 4200],
                     borderColor: "rgba(16, 185, 129, 1)",
                     backgroundColor: "rgba(16, 185, 129, 0.2)",
                     fill: true,
@@ -167,7 +173,7 @@ const StatsCards: FC = () => {
         </div>
       </div>
 
-      <div className="rounded-t-xl mt-5 flex flex-col md:flex-row gap-4 " style={{ width: "100%", height: "350px" }}>
+      <div className="rounded-t-xl mt-5 flex flex-col md:flex-row gap-4" style={{ width: "100%", height: "350px" }}>
         <TopProductsTable />
         <div className="p-4 rounded-t-xl" style={{ width: "500px", height: "200px" }}>
           <ProductBarChart />
