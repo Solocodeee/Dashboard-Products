@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import StatsCards from "./components/StatsCards";
-import AddProductDrawer from "./components/AddProductDrawer"; // ✅ تأكد إنه موجود
+import AddProductDrawer from "./components/AddProductDrawer"; 
 
 export default function Home() {
   const [showDrawer, setShowDrawer] = useState(false);
@@ -19,9 +19,7 @@ export default function Home() {
 
       <AddProductDrawer 
         isOpen={showDrawer}
-        onClose={() => setShowDrawer(false)}
-      />
-      {/* <Test /> */}
+        onClose={() => setShowDrawer(false)}/>
     </div>
   );
 }

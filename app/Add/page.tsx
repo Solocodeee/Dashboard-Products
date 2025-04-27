@@ -13,6 +13,7 @@ export default function CreateProduct() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); // إضافة حالة لإدارة الأخطاء
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -31,14 +32,27 @@ export default function CreateProduct() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Check if price is greater than zero before submitting
-    if (parseFloat(price) <= 0) {
-      Swal.fire("Error", "Price must be greater than zero", "error");
+    
+    // تحقق من الحقول المطلوبة
+    if (!productName || !price || !brand || !description) {
+      setErrorMessage("Please fill all the required fields");
       return;
     }
 
-    // Confirmation message before submitting
+    // تحقق من السعر
+    const parsedPrice = parseFloat(price);
+    if (isNaN(parsedPrice) || parsedPrice <= 0) {
+      setErrorMessage("Price must be a valid number greater than zero");
+      return;
+    }
+
+    // تحقق من صورة المنتج
+    if (!image) {
+      setErrorMessage("Please upload an image for the product");
+      return;
+    }
+
+    // رسالة تأكيد قبل الإرسال
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to save this product?",
@@ -50,13 +64,13 @@ export default function CreateProduct() {
     });
 
     if (result.isConfirmed) {
-      setLoading(true); // Enable loading state
+      setLoading(true); // تمكين حالة التحميل
 
-      // Create FormData to send data with image
+      // إنشاء FormData لإرسال البيانات مع الصورة
       const formData = new FormData();
-      formData.append('image', fileInputRef.current?.files[0] || ''); // Upload image
+      formData.append('image', fileInputRef.current?.files?.[0] || ''); 
       formData.append('title', productName);
-      formData.append('price', price);
+      formData.append('price', parsedPrice.toString());
       formData.append('category', brand);
       formData.append('description', description);
       formData.append('negotiable', negotiable.toString());
@@ -68,28 +82,26 @@ export default function CreateProduct() {
         });
 
         if (response.ok) {
-          // Success message
+          // رسالة النجاح
           Swal.fire("Success", "Product added successfully!", "success");
           setTimeout(() => {
-            router.push('/Test'); // Redirect after success
+            router.push('/Test'); // إعادة التوجيه بعد النجاح
           }, 2000);
 
-          // Reset fields after successful submission
+          // إعادة تعيين الحقول بعد الإرسال الناجح
           setProductName("");
           setBrand("");
           setPrice("");
           setNegotiable(false);
           setDescription("");
-          setImage(null); // Reset the image field
+          setImage(null); // إعادة تعيين حقل الصورة
         } else {
-          // Error message
-          Swal.fire("Error", "Failed to save the product.", "error");
+          setErrorMessage("Failed to save the product.");
         }
-      } catch (error) {
-        // Error handling
-        Swal.fire("Error", "Error: Unable to add the product.", "error");
+      // } catch (error) {
+      //   setErrorMessage("Error: Unable to add the product.");
       } finally {
-        setLoading(false); // End loading state
+        setLoading(false); 
       }
     }
   };
@@ -100,6 +112,13 @@ export default function CreateProduct() {
         &larr;
       </button>
       <h1 className="text-2xl font-bold mb-6 text-center">Add a New Product</h1>
+
+      {/* إذا كان هناك خطأ */}
+      {errorMessage && (
+        <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
+          {errorMessage}
+        </div>
+      )}
 
       {/* Profile image */}
       <div className="flex items-center justify-center mb-6">

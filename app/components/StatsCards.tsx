@@ -1,5 +1,3 @@
-"use client";
-
 import { FC, useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import {
@@ -33,7 +31,6 @@ interface Product {
 }
 
 const StatsCards: FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [averagePrice, setAveragePrice] = useState<number>(0);
   const [topCategory, setTopCategory] = useState<string>("");
@@ -42,7 +39,6 @@ const StatsCards: FC = () => {
     fetch("https://fakestoreapi.com/products")
       .then((response) => response.json())
       .then((data) => {
-        setProducts(data);
         setTotalProducts(data.length);
 
         const total = data.reduce((acc: number, product: Product) => acc + parseFloat(product.price.toString()), 0);
