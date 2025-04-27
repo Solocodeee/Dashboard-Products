@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
 import StatsCards from "./components/StatsCards";
 import AddProductDrawer from "./components/AddProductDrawer"; // ✅ تأكد إنه موجود
-import Test from "./Test";
 
 export default function Home() {
   const [showDrawer, setShowDrawer] = useState(false);
