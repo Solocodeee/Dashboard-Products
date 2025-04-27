@@ -1,34 +1,42 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import Link from "next/link";
 import Swal from "sweetalert2";
-import { motion, AnimatePresence } from "framer-motion";  
-import Add from "../Add/page";  
+import { motion, AnimatePresence } from "framer-motion";
+import Add from "../Add/page";
+import Image from 'next/image'; // استيراد مكون Image
+
+// Interface for product
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  category: string;
+  image: string;
+}
 
 function Test() {
-  const [data, setData] = useState([]);
-  const [filteredData, setFilteredData] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage] = useState(10);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [data, setData] = useState<Product[]>([]);
+  const [filteredData, setFilteredData] = useState<Product[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);  
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   useEffect(() => {
     axios
-      .get("https://fakestoreapi.com/products")
+      .get<Product[]>("https://fakestoreapi.com/products")
       .then((res) => {
         setData(res.data);
         setFilteredData(res.data);
-        setIsLoaded(true);
       })
       .catch((err) => console.log(err));
   }, []);
 
-  const filterData = () => {
+  // استخدام useCallback لتثبيت الدالة
+  const filterData = useCallback(() => {
     let filtered = data;
 
     if (searchQuery) {
@@ -45,23 +53,20 @@ function Test() {
     }
 
     setFilteredData(filtered);
-  };
+  }, [data, searchQuery, selectedCategory]);
 
   useEffect(() => {
     filterData();
-  }, [searchQuery, selectedCategory, data]);
+  }, [filterData]);
 
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredData.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  const indexOfLastProduct = currentPage * 10;
+  const indexOfFirstProduct = indexOfLastProduct - 10;
+  const currentProducts = filteredData.slice(indexOfFirstProduct, indexOfLastProduct);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(filteredData.length / productsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredData.length / 10); i++) {
     pageNumbers.push(i);
   }
 
@@ -111,12 +116,12 @@ function Test() {
           <option value="">All Products</option>
           <option value="electronics">Electronics</option>
           <option value="jewelery">Jewelery</option>
-          <option value="men's clothing">Men's Clothing</option>
-          <option value="women's clothing">Women's Clothing</option>
+          <option value="men's clothing">Men s Clothing</option>
+          <option value="women's clothing">Women s Clothing</option>
         </select>
       </div>
 
-      <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg ">
+      <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg">
         <div className="flex justify-end p-4">
           <button
             onClick={() => setIsDrawerOpen(true)}  // فتح السلايدر عند الضغط على Add +
@@ -145,11 +150,7 @@ function Test() {
               >
                 <td className="px-6 py-4">{product.id}</td>
                 <td className="px-6 py-4">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-12 h-12 object-contain rounded-lg shadow-sm"
-                  />
+                  <Image src={product.image} alt={product.title} className="w-12 h-12 object-contain rounded-lg shadow-sm" width={100} height={50}/>
                 </td>
                 <td className="px-6 py-4">{product.title}</td>
                 <td className="px-6 py-4">${product.price}</td>

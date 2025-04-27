@@ -3,7 +3,9 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { FaCamera } from "react-icons/fa";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2"; 
+import Image from 'next/image'; 
+
 
 export default function CreateProduct() {
   const [productName, setProductName] = useState("");
@@ -33,26 +35,22 @@ export default function CreateProduct() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // تحقق من الحقول المطلوبة
     if (!productName || !price || !brand || !description) {
       setErrorMessage("Please fill all the required fields");
       return;
     }
 
-    // تحقق من السعر
     const parsedPrice = parseFloat(price);
     if (isNaN(parsedPrice) || parsedPrice <= 0) {
       setErrorMessage("Price must be a valid number greater than zero");
       return;
     }
 
-    // تحقق من صورة المنتج
     if (!image) {
       setErrorMessage("Please upload an image for the product");
       return;
     }
 
-    // رسالة تأكيد قبل الإرسال
     const result = await Swal.fire({
       title: "Are you sure?",
       text: "Do you want to save this product?",
@@ -64,9 +62,9 @@ export default function CreateProduct() {
     });
 
     if (result.isConfirmed) {
-      setLoading(true); // تمكين حالة التحميل
+      setLoading(true);
 
-      // إنشاء FormData لإرسال البيانات مع الصورة
+      
       const formData = new FormData();
       formData.append('image', fileInputRef.current?.files?.[0] || ''); 
       formData.append('title', productName);
@@ -82,19 +80,17 @@ export default function CreateProduct() {
         });
 
         if (response.ok) {
-          // رسالة النجاح
           Swal.fire("Success", "Product added successfully!", "success");
           setTimeout(() => {
-            router.push('/Test'); // إعادة التوجيه بعد النجاح
+            router.push('/Test'); 
           }, 2000);
 
-          // إعادة تعيين الحقول بعد الإرسال الناجح
           setProductName("");
           setBrand("");
           setPrice("");
           setNegotiable(false);
           setDescription("");
-          setImage(null); // إعادة تعيين حقل الصورة
+          setImage(null); 
         } else {
           setErrorMessage("Failed to save the product.");
         }
@@ -113,21 +109,19 @@ export default function CreateProduct() {
       </button>
       <h1 className="text-2xl font-bold mb-6 text-center">Add a New Product</h1>
 
-      {/* إذا كان هناك خطأ */}
       {errorMessage && (
         <div className="bg-red-100 text-red-700 p-3 rounded-lg mb-4">
           {errorMessage}
         </div>
       )}
 
-      {/* Profile image */}
       <div className="flex items-center justify-center mb-6">
         <div
           onClick={handleImageClick}
           className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer overflow-hidden relative"
         >
           {image ? (
-            <img src={image} alt="Selected" className="w-full h-full object-cover" />
+            <Image src={image} alt="Selected" className="w-full h-full object-cover" width={100} height={50} />
           ) : (
             <FaCamera className="text-gray-500 text-2xl" />
           )}
@@ -156,7 +150,6 @@ export default function CreateProduct() {
           />
         </div>
 
-        {/* Brand */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Brand</label>
           <select
@@ -173,7 +166,6 @@ export default function CreateProduct() {
           </select>
         </div>
 
-        {/* Price and Negotiable */}
         <div className="flex items-center space-x-3">
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-1">Price</label>

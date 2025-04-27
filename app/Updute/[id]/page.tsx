@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { FaCamera } from "react-icons/fa";
 import Swal from "sweetalert2"; 
+import Image from 'next/image'; // استيراد مكون Image
 
 export default function UpdateProduct() {
   const [productName, setProductName] = useState("");
@@ -65,7 +66,7 @@ export default function UpdateProduct() {
       setLoading(true); 
 
       const formData = new FormData();
-      formData.append('image', fileInputRef.current?.files[0] || ''); 
+      formData.append('image', fileInputRef.current?.files?.[0] || ''); 
       formData.append('title', productName);
       formData.append('price', price);
       formData.append('category', brand);
@@ -86,8 +87,8 @@ export default function UpdateProduct() {
         } else {
           Swal.fire("Error", "Failed to update the product.", "error");
         }
-      } catch (error) {
-        Swal.fire("Error", "Error: Unable to update the product.", "error");
+      // } catch (error) {
+      //   Swal.fire("Error", "Error: Unable to update the product.", "error");
       } finally {
         setLoading(false); 
       }
@@ -107,7 +108,7 @@ export default function UpdateProduct() {
           className="w-24 h-24 rounded-full bg-gray-100 flex items-center justify-center cursor-pointer overflow-hidden relative"
         >
           {image ? (
-            <img src={image} alt="Selected" className="w-full h-full object-cover" />
+            <Image src={image} alt="Selected" className="w-full h-full object-cover" width={100} height={50} />
           ) : (
             <FaCamera className="text-gray-500 text-2xl" />
           )}
