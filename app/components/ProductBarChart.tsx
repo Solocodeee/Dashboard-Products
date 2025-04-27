@@ -16,7 +16,7 @@ const ProductBarChart = () => {
 
   return (
     <>
-      <div className="bg-white p-6 rounded-lg  " style={{ width: "450px" }}>
+      <div className="bg-white p-6 rounded-lg  " style={{ width: "400px" }}>
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Product Add by Month</h2>
         <div className="space-y-4">
           {productAddByMonth.map((item) => (

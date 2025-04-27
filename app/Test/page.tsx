@@ -124,7 +124,7 @@ function Test() {
       <div className="w-full max-w-5xl bg-white rounded-lg shadow-lg">
         <div className="flex justify-end p-4">
           <button
-            onClick={() => setIsDrawerOpen(true)}  // فتح السلايدر عند الضغط على Add +
+            onClick={() => setIsDrawerOpen(true)}  
             className="text-blue-600 font-semibold hover:text-blue-700 transition-all duration-300"
           >
             Add +
